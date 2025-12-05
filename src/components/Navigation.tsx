@@ -57,34 +57,38 @@ export default function Navigation() {
         <button
           className="md:hidden z-50 text-charcoal"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
+      </div>
 
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-cream z-40 flex flex-col items-center justify-center space-y-8 md:hidden"
-          >
+      {isMobileMenuOpen && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="md:hidden overflow-hidden bg-cream border-t border-charcoal/10"
+        >
+          <div className="max-w-7xl mx-auto px-6 py-4 space-y-1">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
                 to={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`font-serif italic text-3xl transition-colors ${
+                className={`block py-3 font-sans text-sm uppercase tracking-[0.15em] transition-colors ${
                   isActive(link.href)
-                    ? 'text-maroon'
+                    ? 'text-maroon font-semibold'
                     : 'text-charcoal hover:text-maroon'
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-          </motion.div>
-        )}
-      </div>
+          </div>
+        </motion.div>
+      )}
     </motion.nav>
   );
 }
