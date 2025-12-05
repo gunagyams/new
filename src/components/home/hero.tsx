@@ -13,7 +13,6 @@ const Hero: React.FC = () => {
   const containerRef = useRef<HTMLElement>(null);
   const [images, setImages] = useState<HomepageImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -26,22 +25,8 @@ const Hero: React.FC = () => {
 
   const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
-  // Mobile scroll reveal animation
-  const mobileImageReveal = useTransform(scrollYProgress, [0, 0.4], [100, 0]);
-  const mobileImageOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
-  const mobileImageScale = useTransform(scrollYProgress, [0, 0.3], [0.9, 1]);
-
   useEffect(() => {
     fetchImages();
-
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const fetchImages = async () => {
@@ -88,99 +73,66 @@ const Hero: React.FC = () => {
       <div className="max-w-[1800px] mx-auto grid grid-cols-12 gap-3 md:gap-10 w-full">
 
         {/* --- LEFT COLUMN (Text + Tall Bride + Detail) --- */}
-        <motion.div className="col-span-3 flex flex-col gap-4 md:gap-10 mt-12 md:mt-24 z-10">
+        <motion.div style={{ y: yLeft }} className="col-span-3 flex flex-col gap-4 md:gap-10 mt-12 md:mt-24 z-10">
            {/* Header Text */}
            <motion.div style={{ opacity: textOpacity }} className="text-left">
               <h2 className="font-sans text-[6px] md:text-[10px] tracking-[0.3em] uppercase leading-loose text-charcoal/80 border-l-2 border-maroon/30 pl-2 md:pl-4">
                 Timeless Elegance <br/> Captured Forever
               </h2>
            </motion.div>
-
+           
            {/* Image: Bride Portrait - TALL (aspect-[1/2]) */}
-           <motion.div
-             className="w-full aspect-[1/2] relative group overflow-hidden"
-             style={{
-               y: isMobile ? mobileImageReveal : yLeft,
-               opacity: isMobile ? mobileImageOpacity : 1,
-               scale: isMobile ? mobileImageScale : 1
-             }}
-           >
+           <div className="w-full aspect-[1/2] relative group overflow-hidden">
               <img
                 src={getImageUrl(0)}
                 alt={getImageAlt(0, "Bride Portrait")}
                 className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
               />
-           </motion.div>
+           </div>
 
            {/* Image: Darker Detail (Smaller) */}
-           <motion.div
-             className="w-3/4 aspect-square ml-auto relative group overflow-hidden mt-2 md:mt-4"
-             style={{
-               y: isMobile ? mobileImageReveal : yLeft,
-               opacity: isMobile ? mobileImageOpacity : 1,
-               scale: isMobile ? mobileImageScale : 1
-             }}
-           >
+           <div className="w-3/4 aspect-square ml-auto relative group overflow-hidden mt-2 md:mt-4">
                <img
                  src={getImageUrl(2)}
                  alt={getImageAlt(2, "Detail Shot")}
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
-           </motion.div>
+           </div>
         </motion.div>
 
 
         {/* --- CENTER COLUMN (Tall Main + Quote + Landscape) --- */}
-        <motion.div className="col-span-6 flex flex-col items-center gap-6 md:gap-12 z-20">
+        <motion.div style={{ y: yCenter }} className="col-span-6 flex flex-col items-center gap-6 md:gap-12 z-20">
 
            {/* Main Hero Image - TALL (aspect-[2/3]) */}
-           <motion.div
-             className="w-10/12 aspect-[3/4] relative group shadow-sm hover:shadow-xl transition-shadow duration-500 overflow-hidden"
-             style={{
-               y: isMobile ? mobileImageReveal : yCenter,
-               opacity: isMobile ? mobileImageOpacity : 1,
-               scale: isMobile ? mobileImageScale : 1
-             }}
-           >
+           <div className="w-10/12 aspect-[3/4] relative group shadow-sm hover:shadow-xl transition-shadow duration-500 overflow-hidden">
               <img
                 src={getImageUrl(1)}
                 alt={getImageAlt(1, "Couple Portrait")}
                 className="w-full h-full object-cover transition-all duration-1000 ease-in-out transform group-hover:scale-105"
               />
-           </motion.div>
+           </div>
 
            {/* Quote Block - Reduced padding */}
-           <motion.div
-             className="max-w-md text-center py-4 md:py-8 px-2 md:px-4"
-             style={{
-               opacity: isMobile ? mobileImageOpacity : 1
-             }}
-           >
+           <div className="max-w-md text-center py-4 md:py-8 px-2 md:px-4">
               <p className="font-serif italic text-sm md:text-4xl text-charcoal leading-tight">
                 "Let's create and capture memories through our lenses that you can cherish for life."
               </p>
-           </motion.div>
+           </div>
 
            {/* Secondary Image (Landscape/Sitting) */}
-           <motion.div
-             className="w-10/12 aspect-[4/3] relative group overflow-hidden shadow-md"
-             style={{
-               y: isMobile ? mobileImageReveal : yCenter,
-               opacity: isMobile ? mobileImageOpacity : 1,
-               scale: isMobile ? mobileImageScale : 1
-             }}
-           >
+           <div className="w-10/12 aspect-[4/3] relative group overflow-hidden shadow-md">
                <img
                  src={getImageUrl(4)}
                  alt={getImageAlt(4, "Intimate Moment")}
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
-           </motion.div>
+           </div>
         </motion.div>
 
 
         {/* --- RIGHT COLUMN (Text + Movement + Tall Nature) --- */}
-        <motion.div className="col-span-3 flex flex-col gap-6 md:gap-12 mt-4 md:mt-8 z-10">
+        <motion.div style={{ y: yRight }} className="col-span-3 flex flex-col gap-6 md:gap-12 mt-4 md:mt-8 z-10">
            {/* Header Text */}
            <motion.div style={{ opacity: textOpacity }} className="text-right">
               <h2 className="font-sans text-[6px] md:text-[10px] tracking-[0.3em] uppercase leading-loose text-charcoal/80 border-r-2 border-maroon/30 pr-2 md:pr-4">
@@ -189,36 +141,22 @@ const Hero: React.FC = () => {
            </motion.div>
 
            {/* Image: Walking/Movement */}
-           <motion.div
-             className="w-full aspect-[3/4] relative group overflow-hidden mt-0 md:mt-12"
-             style={{
-               y: isMobile ? mobileImageReveal : yRight,
-               opacity: isMobile ? mobileImageOpacity : 1,
-               scale: isMobile ? mobileImageScale : 1
-             }}
-           >
+           <div className="w-full aspect-[3/4] relative group overflow-hidden mt-0 md:mt-12">
                <img
                  src={getImageUrl(5)}
                  alt={getImageAlt(5, "Movement")}
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
-           </motion.div>
+           </div>
 
            {/* Image: Nature/Landscape - TALL (aspect-[1/2]) */}
-           <motion.div
-             className="w-full aspect-[1/2] relative group overflow-hidden shadow-lg"
-             style={{
-               y: isMobile ? mobileImageReveal : yRight,
-               opacity: isMobile ? mobileImageOpacity : 1,
-               scale: isMobile ? mobileImageScale : 1
-             }}
-           >
+           <div className="w-full aspect-[1/2] relative group overflow-hidden shadow-lg">
                <img
                  src={getImageUrl(6)}
                  alt={getImageAlt(6, "Landscape")}
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
-           </motion.div>
+           </div>
         </motion.div>
       </div>
 
