@@ -62,7 +62,7 @@ const Hero: React.FC = () => {
   return (
     <section
       ref={containerRef}
-      className="relative bg-cream min-h-[160vh] md:min-h-[200vh] pt-28 pb-10 px-3 md:px-12 overflow-hidden"
+      className="relative bg-cream min-h-[120vh] md:min-h-[200vh] pt-28 pb-10 px-3 md:px-12 overflow-hidden"
     >
       {loading ? (
         <div className="absolute inset-0 flex items-center justify-center">
