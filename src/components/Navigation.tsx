@@ -34,16 +34,13 @@ export default function Navigation() {
   const loadLogo = async () => {
     try {
       const { data } = await supabase
-        .from('homepage_images')
+        .from('about_page_images')
         .select('image_url')
-        .eq('position', 0)
+        .eq('image_key', 'site_logo')
         .maybeSingle();
 
       if (data?.image_url) {
-        const url = data.image_url.includes('supabase')
-          ? `${data.image_url}?t=${Date.now()}`
-          : data.image_url;
-        setLogoUrl(url);
+        setLogoUrl(data.image_url);
       }
     } catch (error) {
       console.error('Error loading logo:', error);

@@ -26,15 +26,15 @@ interface LogoData {
 }
 
 const HOMEPAGE_POSITIONS = [
-  { pos: 0, label: 'Site Logo' },
-  { pos: 1, label: 'Hero - Center Main' },
-  { pos: 2, label: 'Hero - Left Tall' },
-  { pos: 3, label: 'Hero - Left Small' },
-  { pos: 4, label: 'Hero - Center Landscape' },
-  { pos: 5, label: 'Intro - Small Detail' },
-  { pos: 6, label: 'Hero - Right Bottom' },
-  { pos: 7, label: 'Hero - Right Top' },
-  { pos: 8, label: 'Intro - Main Portrait' },
+  { pos: 0, label: 'Hero Left Top' },
+  { pos: 1, label: 'Hero Center Main' },
+  { pos: 2, label: 'Hero Left Detail' },
+  { pos: 3, label: 'Hero Center Secondary' },
+  { pos: 4, label: 'Hero Center Landscape' },
+  { pos: 5, label: 'Hero Right Movement' },
+  { pos: 6, label: 'Hero Right Nature' },
+  { pos: 7, label: 'Hero Right Tall' },
+  { pos: 8, label: 'Intro Portrait' },
 ];
 
 const ABOUT_IMAGES = [
