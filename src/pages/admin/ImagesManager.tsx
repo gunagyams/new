@@ -45,9 +45,6 @@ const ABOUT_IMAGES = [
   { key: 'gallery_3', label: 'Gallery 3', page: 'About' },
   { key: 'gallery_4', label: 'Gallery 4', page: 'About' },
   { key: 'wedding_banner', label: 'Wedding Banner', page: 'About' },
-  { key: 'stories_header', label: 'Stories Header', page: 'Stories' },
-  { key: 'blog_header', label: 'Blog Header', page: 'Blog' },
-  { key: 'contact_header', label: 'Contact Header', page: 'Contact' },
 ];
 
 export default function ImagesManager() {

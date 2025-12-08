@@ -4,40 +4,13 @@ import { Calendar, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { BlogPost } from '../lib/types';
 
-interface HeaderImage {
-  image_url: string;
-  alt_text: string;
-}
-
 export default function Blog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [headerImage, setHeaderImage] = useState<HeaderImage | null>(null);
 
   useEffect(() => {
     fetchPosts();
-    loadHeaderImage();
   }, []);
-
-  const loadHeaderImage = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('about_page_images')
-        .select('image_url, alt_text')
-        .eq('image_key', 'blog_header')
-        .maybeSingle();
-
-      if (error) throw error;
-      if (data) {
-        const url = data.image_url.includes('supabase')
-          ? `${data.image_url}?t=${Date.now()}`
-          : data.image_url;
-        setHeaderImage({ ...data, image_url: url });
-      }
-    } catch (error) {
-      console.error('Error loading header image:', error);
-    }
-  };
 
   const fetchPosts = async () => {
     try {
@@ -65,13 +38,7 @@ export default function Blog() {
   }
   return (
     <div className="min-h-screen bg-[#f8f6f3] pt-24">
-      <div className="relative h-[300px] bg-neutral-100">
-        <img
-          src={headerImage?.image_url || '/assets/images/hero-1.jpg'}
-          alt={headerImage?.alt_text || 'Journal'}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30"></div>
+      <div className="relative h-[300px] bg-gradient-to-br from-neutral-800 via-neutral-700 to-neutral-600">
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div>
             <h1 className="text-xs tracking-[0.3em] uppercase text-white mb-3">Journal</h1>

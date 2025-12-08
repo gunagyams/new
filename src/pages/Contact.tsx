@@ -9,11 +9,6 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-interface HeaderImage {
-  image_url: string;
-  alt_text: string;
-}
-
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -26,32 +21,10 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [seoSettings, setSeoSettings] = useState<PageSEOSettings | null>(null);
-  const [headerImage, setHeaderImage] = useState<HeaderImage | null>(null);
 
   useEffect(() => {
     getPageSEO('contact').then(setSeoSettings);
-    loadHeaderImage();
   }, []);
-
-  const loadHeaderImage = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('about_page_images')
-        .select('image_url, alt_text')
-        .eq('image_key', 'contact_header')
-        .maybeSingle();
-
-      if (error) throw error;
-      if (data) {
-        const url = data.image_url.includes('supabase')
-          ? `${data.image_url}?t=${Date.now()}`
-          : data.image_url;
-        setHeaderImage({ ...data, image_url: url });
-      }
-    } catch (error) {
-      console.error('Error loading header image:', error);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,13 +93,7 @@ export default function Contact() {
         <meta name="twitter:description" content={seoSettings?.twitter_description || pageDescription} />
         {seoSettings?.twitter_image && <meta name="twitter:image" content={seoSettings.twitter_image} />}
       </Helmet>
-      <div className="relative h-[300px] bg-neutral-100">
-        <img
-          src={headerImage?.image_url || '/assets/images/contact-hero.jpg'}
-          alt={headerImage?.alt_text || 'Contact us'}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30"></div>
+      <div className="relative h-[300px] bg-gradient-to-br from-neutral-800 via-neutral-700 to-neutral-600">
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div>
             <h1 className="text-xs tracking-[0.3em] uppercase text-white mb-3">Contact</h1>

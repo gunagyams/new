@@ -5,11 +5,6 @@ import { supabase } from '../lib/supabase';
 import { Project } from '../lib/types';
 import { getPageSEO, type PageSEOSettings } from '../lib/seo';
 
-interface HeaderImage {
-  image_url: string;
-  alt_text: string;
-}
-
 export default function Stories() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,36 +14,14 @@ export default function Stories() {
   const [accessCode, setAccessCode] = useState('');
   const [error, setError] = useState('');
   const [seoSettings, setSeoSettings] = useState<PageSEOSettings | null>(null);
-  const [headerImage, setHeaderImage] = useState<HeaderImage | null>(null);
 
   useEffect(() => {
     getPageSEO('stories').then(setSeoSettings);
-    loadHeaderImage();
   }, []);
 
   useEffect(() => {
     fetchProjects();
   }, []);
-
-  const loadHeaderImage = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('about_page_images')
-        .select('image_url, alt_text')
-        .eq('image_key', 'stories_header')
-        .maybeSingle();
-
-      if (error) throw error;
-      if (data) {
-        const url = data.image_url.includes('supabase')
-          ? `${data.image_url}?t=${Date.now()}`
-          : data.image_url;
-        setHeaderImage({ ...data, image_url: url });
-      }
-    } catch (error) {
-      console.error('Error loading header image:', error);
-    }
-  };
 
   const fetchProjects = async () => {
     try {
@@ -136,13 +109,7 @@ export default function Stories() {
         <meta name="twitter:description" content={seoSettings?.twitter_description || pageDescription} />
         {seoSettings?.twitter_image && <meta name="twitter:image" content={seoSettings.twitter_image} />}
       </Helmet>
-      <div className="relative h-[300px] bg-neutral-100">
-        <img
-          src={headerImage?.image_url || '/assets/images/hero-2.jpg'}
-          alt={headerImage?.alt_text || 'Wedding stories'}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30"></div>
+      <div className="relative h-[300px] bg-gradient-to-br from-neutral-800 via-neutral-700 to-neutral-600">
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div>
             <h1 className="text-xs tracking-[0.3em] uppercase text-white mb-3">Portfolio</h1>
