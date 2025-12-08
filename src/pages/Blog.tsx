@@ -38,11 +38,11 @@ export default function Blog() {
   }
   return (
     <div className="min-h-screen bg-[#f8f6f3] pt-24">
-      <div className="relative h-[300px] bg-gradient-to-br from-neutral-800 via-neutral-700 to-neutral-600">
+      <div className="relative h-[300px] bg-gradient-to-br from-[#d4c5b0] via-[#c9b89a] to-[#b8a585]">
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div>
-            <h1 className="text-xs tracking-[0.3em] uppercase text-white mb-3">Journal</h1>
-            <p className="text-white/90 max-w-xl text-sm">
+            <h1 className="text-xs tracking-[0.3em] uppercase text-neutral-800 mb-3">Journal</h1>
+            <p className="text-neutral-700 max-w-xl text-sm">
               Stories, tips, and inspiration for your wedding day
             </p>
           </div>
