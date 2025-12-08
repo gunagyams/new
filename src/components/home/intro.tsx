@@ -21,7 +21,7 @@ const Intro: React.FC = () => {
       const { data, error } = await supabase
         .from('homepage_images')
         .select('*')
-        .in('position', [8, 9])
+        .in('position', [5, 8])
         .order('position', { ascending: true });
 
       if (error) throw error;
@@ -98,8 +98,8 @@ const Intro: React.FC = () => {
             className="absolute bottom-0 left-0 w-1/2 h-[350px] overflow-hidden border-8 border-cream"
           >
             <img
-               src={getImageUrl(9, 'https://picsum.photos/id/319/400/600')}
-               alt={getImageAlt(9, 'Detail shot')}
+               src={getImageUrl(5, 'https://picsum.photos/id/319/400/600')}
+               alt={getImageAlt(5, 'Detail shot')}
                className="w-full h-full object-cover"
              />
           </motion.div>

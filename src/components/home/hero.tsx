@@ -84,8 +84,8 @@ const Hero: React.FC = () => {
            {/* Image: Bride Portrait - TALL (aspect-[1/2]) */}
            <div className="w-full aspect-[1/2] relative group overflow-hidden">
               <img
-                src={getImageUrl(0)}
-                alt={getImageAlt(0, "Bride Portrait")}
+                src={getImageUrl(2)}
+                alt={getImageAlt(2, "Bride Portrait")}
                 className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
               />
            </div>
@@ -93,8 +93,8 @@ const Hero: React.FC = () => {
            {/* Image: Darker Detail (Smaller) */}
            <div className="w-3/4 aspect-square ml-auto relative group overflow-hidden mt-2 md:mt-4">
                <img
-                 src={getImageUrl(2)}
-                 alt={getImageAlt(2, "Detail Shot")}
+                 src={getImageUrl(3)}
+                 alt={getImageAlt(3, "Detail Shot")}
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
            </div>
@@ -143,8 +143,8 @@ const Hero: React.FC = () => {
            {/* Image: Walking/Movement */}
            <div className="w-full aspect-[3/4] relative group overflow-hidden mt-0 md:mt-12">
                <img
-                 src={getImageUrl(5)}
-                 alt={getImageAlt(5, "Movement")}
+                 src={getImageUrl(7)}
+                 alt={getImageAlt(7, "Movement")}
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
            </div>

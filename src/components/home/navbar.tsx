@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 
 const NAV_LINKS = [
   { label: 'About', href: '/about' },
@@ -14,6 +15,30 @@ const Navbar: React.FC = () => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [logoUrl, setLogoUrl] = useState('/assets/images/sf_logo.png');
+
+  useEffect(() => {
+    loadLogo();
+  }, []);
+
+  const loadLogo = async () => {
+    try {
+      const { data } = await supabase
+        .from('homepage_images')
+        .select('image_url')
+        .eq('position', 0)
+        .maybeSingle();
+
+      if (data?.image_url) {
+        const url = data.image_url.includes('supabase')
+          ? `${data.image_url}?t=${Date.now()}`
+          : data.image_url;
+        setLogoUrl(url);
+      }
+    } catch (error) {
+      console.error('Error loading logo:', error);
+    }
+  };
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
@@ -27,7 +52,7 @@ const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="z-50 relative">
-          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-12 md:h-14 w-auto" />
+          <img src={logoUrl} alt="SF Logo" className="h-12 md:h-14 w-auto" />
         </Link>
 
         {/* Desktop Menu */}
