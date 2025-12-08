@@ -21,13 +21,13 @@ const Navbar: React.FC = () => {
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-6 md:px-12 py-6 ${
-        isScrolled ? 'bg-cream/80 backdrop-blur-md shadow-sm py-4' : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-6 md:px-12 py-5 ${
+        isScrolled ? 'bg-cream/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="z-50 relative">
-          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-12 md:h-14 w-auto" />
+          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-10 md:h-12 w-auto" />
         </Link>
 
         {/* Desktop Menu */}
