@@ -14,10 +14,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     { path: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/admin/homepage-images', label: 'Homepage', icon: Home },
+    { path: '/admin/images', label: 'Images', icon: ImageIcon },
     { path: '/admin/projects', label: 'Projects', icon: Images },
     { path: '/admin/blog', label: 'Blog', icon: FileText },
-    { path: '/admin/about-images', label: 'Page Images', icon: ImageIcon },
     { path: '/admin/seo', label: 'Page SEO', icon: Search },
   ];
 

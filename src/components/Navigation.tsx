@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Camera } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { supabase } from '../lib/supabase';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
@@ -14,6 +15,7 @@ const NAV_LINKS = [
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [logoUrl, setLogoUrl] = useState('');
   const location = useLocation();
   const { scrollY } = useScroll();
 
@@ -22,8 +24,28 @@ export default function Navigation() {
   });
 
   useEffect(() => {
+    loadLogo();
+  }, []);
+
+  useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+
+  const loadLogo = async () => {
+    try {
+      const { data } = await supabase
+        .from('about_page_images')
+        .select('image_url')
+        .eq('image_key', 'site_logo')
+        .maybeSingle();
+
+      if (data?.image_url) {
+        setLogoUrl(data.image_url);
+      }
+    } catch (error) {
+      console.error('Error loading logo:', error);
+    }
+  };
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -34,8 +56,15 @@ export default function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="z-50 relative">
-          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-12 md:h-14 w-auto" />
+        <Link to="/" className="z-50 relative flex items-center gap-2">
+          {logoUrl ? (
+            <img src={logoUrl} alt="Site Logo" className="h-12 md:h-14 w-auto" />
+          ) : (
+            <div className="flex items-center gap-2">
+              <Camera className="h-8 w-8 text-maroon" />
+              <span className="text-xl font-serif text-charcoal">SF</span>
+            </div>
+          )}
         </Link>
 
         <div className="hidden md:flex space-x-12">
