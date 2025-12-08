@@ -21,22 +21,22 @@ const Navbar: React.FC = () => {
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-6 md:px-12 py-4 ${
-        isScrolled ? 'bg-cream/80 backdrop-blur-md shadow-sm py-2.5' : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-6 md:px-12 py-2 ${
+        isScrolled ? 'bg-cream/80 backdrop-blur-md shadow-sm py-1.5' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="z-50 relative">
-          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-8 md:h-10 w-auto" />
+          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-6 md:h-7 w-auto" />
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-12">
+        <div className="hidden md:flex space-x-8">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}
               to={link.href}
-              className="font-sans text-xs uppercase tracking-[0.2em] text-charcoal hover:text-maroon transition-colors duration-300"
+              className="font-sans text-[10px] uppercase tracking-[0.2em] text-charcoal hover:text-maroon transition-colors duration-300"
             >
               {link.label}
             </Link>
