@@ -15,7 +15,6 @@ export default function Contact() {
     email: '',
     phone: '',
     eventDate: '',
-    location: '',
     details: '',
   });
   const [submitted, setSubmitted] = useState(false);
@@ -39,7 +38,6 @@ export default function Contact() {
             email: formData.email,
             phone: formData.phone,
             event_date: formData.eventDate,
-            location: formData.location,
             details: formData.details,
           },
         ]);
@@ -52,7 +50,6 @@ export default function Contact() {
         email: '',
         phone: '',
         eventDate: '',
-        location: '',
         details: '',
       });
 
@@ -152,8 +149,9 @@ export default function Contact() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
+                      required
                       className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-maroon focus:outline-none bg-white"
-                      placeholder="PHONE NUMBER"
+                      placeholder="PHONE NUMBER *"
                     />
                   </div>
                   <div>
@@ -162,20 +160,10 @@ export default function Contact() {
                       name="eventDate"
                       value={formData.eventDate}
                       onChange={handleChange}
+                      required
                       className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-maroon focus:outline-none bg-white"
                     />
                   </div>
-                </div>
-
-                <div>
-                  <input
-                    type="text"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-neutral-800 focus:outline-none bg-white"
-                    placeholder="EVENT LOCATION"
-                  />
                 </div>
 
                 <div>
@@ -186,7 +174,7 @@ export default function Contact() {
                     required
                     rows={8}
                     className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-neutral-800 focus:outline-none resize-none bg-white"
-                    placeholder="TELL US ABOUT YOUR WEDDING *"
+                    placeholder="TELL US ABOUT YOUR VISION – WEDDING DATE, OTHER EVENT DATES, VENUE LOCATIONS, TYPE OF COVERAGE YOU NEED (PHOTO ONLY/PHOTO+VIDEO ETC.) *"
                   />
                 </div>
 
@@ -208,15 +196,14 @@ export default function Contact() {
                     <MapPin className="w-5 h-5 text-neutral-600 flex-shrink-0 mt-1" />
                     <div>
                       <p className="text-sm text-neutral-800 mb-1">Location</p>
-                      <p className="text-sm text-neutral-600">Vancouver, BC</p>
-                      <p className="text-xs text-neutral-500">Serving all of Canada</p>
+                      <p className="text-sm text-neutral-600">Kelowna, BC</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
                     <Phone className="w-5 h-5 text-neutral-600 flex-shrink-0 mt-1" />
                     <div>
                       <p className="text-sm text-neutral-800 mb-1">Phone</p>
-                      <p className="text-sm text-neutral-600">(604) 555-0123</p>
+                      <p className="text-sm text-neutral-600">(778) 237-5140</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -230,7 +217,7 @@ export default function Contact() {
               </div>
 
               <div>
-                <h3 className="text-xs tracking-[0.3em] uppercase text-neutral-500 mb-6">Follow</h3>
+                <h3 className="text-xs tracking-[0.3em] uppercase text-neutral-500 mb-6">Follow us on Instagram</h3>
                 <div className="flex gap-4">
                   <a
                     href="https://www.instagram.com/syncingfilms/"
