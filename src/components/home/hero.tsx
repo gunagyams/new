@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 
 interface HomepageImage {
@@ -10,20 +9,8 @@ interface HomepageImage {
 }
 
 const Hero: React.FC = () => {
-  const containerRef = useRef<HTMLElement>(null);
   const [images, setImages] = useState<HomepageImage[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start'],
-  });
-
-  const yLeft = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const yCenter = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const yRight = useTransform(scrollYProgress, [0, 1], [0, -180]);
-
-  const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   useEffect(() => {
     fetchImages();
@@ -61,7 +48,6 @@ const Hero: React.FC = () => {
 
   return (
     <section
-      ref={containerRef}
       className="relative bg-cream min-h-[120vh] md:min-h-[200vh] pt-28 pb-10 px-3 md:px-12 overflow-hidden"
     >
       {loading ? (
@@ -73,13 +59,13 @@ const Hero: React.FC = () => {
       <div className="max-w-[1800px] mx-auto grid grid-cols-12 gap-3 md:gap-10 w-full">
 
         {/* --- LEFT COLUMN (Text + Tall Bride + Detail) --- */}
-        <motion.div style={{ y: yLeft }} className="col-span-3 flex flex-col gap-4 md:gap-10 mt-12 md:mt-24 z-10">
+        <div className="col-span-3 flex flex-col gap-4 md:gap-10 mt-12 md:mt-24 z-10">
            {/* Header Text */}
-           <motion.div style={{ opacity: textOpacity }} className="text-left">
+           <div className="text-left">
               <h2 className="font-sans text-[6px] md:text-[10px] tracking-[0.3em] uppercase leading-loose text-charcoal/80 border-l-2 border-maroon/30 pl-2 md:pl-4">
                 Timeless Elegance <br/> Captured Forever
               </h2>
-           </motion.div>
+           </div>
            
            {/* Image: Bride Portrait - TALL (aspect-[1/2]) */}
            <div className="w-full aspect-[1/2] relative group overflow-hidden">
@@ -98,11 +84,11 @@ const Hero: React.FC = () => {
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
            </div>
-        </motion.div>
+        </div>
 
 
         {/* --- CENTER COLUMN (Tall Main + Quote + Landscape) --- */}
-        <motion.div style={{ y: yCenter }} className="col-span-6 flex flex-col items-center gap-6 md:gap-12 z-20">
+        <div className="col-span-6 flex flex-col items-center gap-6 md:gap-12 z-20">
 
            {/* Main Hero Image - TALL (aspect-[2/3]) */}
            <div className="w-10/12 aspect-[3/4] relative group shadow-sm hover:shadow-xl transition-shadow duration-500 overflow-hidden">
@@ -128,17 +114,17 @@ const Hero: React.FC = () => {
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
            </div>
-        </motion.div>
+        </div>
 
 
         {/* --- RIGHT COLUMN (Text + Movement + Tall Nature) --- */}
-        <motion.div style={{ y: yRight }} className="col-span-3 flex flex-col gap-6 md:gap-12 mt-4 md:mt-8 z-10">
+        <div className="col-span-3 flex flex-col gap-6 md:gap-12 mt-4 md:mt-8 z-10">
            {/* Header Text */}
-           <motion.div style={{ opacity: textOpacity }} className="text-right">
+           <div className="text-right">
               <h2 className="font-sans text-[6px] md:text-[10px] tracking-[0.3em] uppercase leading-loose text-charcoal/80 border-r-2 border-maroon/30 pr-2 md:pr-4">
                 Moments become <br/> Memories, Forever
               </h2>
-           </motion.div>
+           </div>
 
            {/* Image: Walking/Movement */}
            <div className="w-full aspect-[3/4] relative group overflow-hidden mt-0 md:mt-12">
@@ -157,7 +143,7 @@ const Hero: React.FC = () => {
                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                />
            </div>
-        </motion.div>
+        </div>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-cream via-cream/60 to-transparent z-30 pointer-events-none" />
