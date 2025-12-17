@@ -35,6 +35,7 @@ const HOMEPAGE_POSITIONS = [
   { pos: 6, label: 'Hero Right Nature' },
   { pos: 7, label: 'Hero Right Tall' },
   { pos: 8, label: 'Intro Portrait' },
+  { pos: 9, label: 'Intro Detail Shot' },
 ];
 
 const ABOUT_IMAGES = [
