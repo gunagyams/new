@@ -56,23 +56,23 @@ export default function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="z-50 relative flex items-center gap-3">
+        <Link to="/" className="z-50 relative flex items-center gap-2">
           {logoUrl ? (
-            <img src={logoUrl} alt="Site Logo" className="h-12 md:h-14 w-auto" />
+            <img src={logoUrl} alt="Site Logo" className="h-10 md:h-11 w-auto" />
           ) : (
-            <div className="flex items-center gap-3">
-              <Camera className="h-9 w-9 text-maroon" />
-              <span className="text-2xl font-serif text-charcoal">SF</span>
+            <div className="flex items-center gap-2">
+              <Camera className="h-7 w-7 text-maroon" />
+              <span className="text-xl font-serif text-charcoal">SF</span>
             </div>
           )}
         </Link>
 
-        <div className="hidden md:flex space-x-12">
+        <div className="hidden md:flex space-x-10">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}
               to={link.href}
-              className={`font-sans text-[15px] uppercase tracking-[0.2em] transition-colors duration-300 ${
+              className={`font-sans text-[13px] uppercase tracking-[0.2em] transition-colors duration-300 ${
                 isActive(link.href)
                   ? 'text-maroon font-semibold'
                   : 'text-charcoal hover:text-maroon'
@@ -88,7 +88,7 @@ export default function Navigation() {
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          {isMobileMenuOpen ? <X size={36} /> : <Menu size={36} />}
+          {isMobileMenuOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
       </div>
 
@@ -100,13 +100,13 @@ export default function Navigation() {
           transition={{ duration: 0.2 }}
           className="md:hidden overflow-hidden bg-cream border-t border-charcoal/10"
         >
-          <div className="max-w-7xl mx-auto px-6 py-6 space-y-2">
+          <div className="max-w-7xl mx-auto px-6 py-5 space-y-1">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
                 to={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`block py-4 font-sans text-xl uppercase tracking-[0.15em] transition-colors ${
+                className={`block py-3 font-sans text-lg uppercase tracking-[0.15em] transition-colors ${
                   isActive(link.href)
                     ? 'text-maroon font-semibold'
                     : 'text-charcoal hover:text-maroon'
