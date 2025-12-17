@@ -21,13 +21,13 @@ const Navbar: React.FC = () => {
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-6 md:px-12 py-2 ${
-        isScrolled ? 'bg-cream/80 backdrop-blur-md shadow-sm py-1.5' : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-6 md:px-12 py-4 ${
+        isScrolled ? 'bg-cream/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="z-50 relative">
-          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-9 md:h-[42px] w-auto" />
+          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-[54px] md:h-[63px] w-auto" />
         </Link>
 
         {/* Desktop Menu */}
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
             <Link
               key={link.label}
               to={link.href}
-              className="font-sans text-[15px] uppercase tracking-[0.2em] text-charcoal hover:text-maroon transition-colors duration-300"
+              className="font-sans text-[23px] uppercase tracking-[0.2em] text-charcoal hover:text-maroon transition-colors duration-300"
             >
               {link.label}
             </Link>
@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
           className="md:hidden z-50 text-charcoal"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? <X size={36} /> : <Menu size={36} />}
+          {isMobileMenuOpen ? <X size={54} /> : <Menu size={54} />}
         </button>
 
         {/* Mobile Menu Overlay */}
@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
                 key={link.label}
                 to={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="font-serif italic text-3xl text-charcoal"
+                className="font-serif italic text-[45px] text-charcoal"
               >
                 {link.label}
               </Link>
