@@ -33,20 +33,20 @@ export const GALLERY_IMAGES: ImageItem[] = [
 export const SERVICES: ServiceItem[] = [
   {
     id: 's1',
-    title: 'Editorial Photography',
-    description: 'Timeless imagery captured on both digital and medium format film, focusing on the quiet, unscripted moments.',
+    title: 'Cinematic Storytelling',
+    description: 'Real moments, captured with intention and emotion.',
     icon: Camera,
   },
   {
     id: 's2',
-    title: 'Super 8 & Cinema',
-    description: 'Nostalgic motion pictures that capture the atmosphere and emotion of your celebration in a way stills cannot.',
+    title: 'Cultural Wedding Expertise',
+    description: 'Deep understanding of Indian & South Asian traditions.',
     icon: Film,
   },
   {
     id: 's3',
-    title: 'Curated Heirlooms',
-    description: 'Bespoke fine art albums and museum-grade prints designed to preserve your legacy for generations.',
+    title: 'Timeless Legacy',
+    description: 'Memories designed to live far beyond the wedding day.',
     icon: Heart,
   },
 ];

@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="z-50 relative">
-          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-6 md:h-7 w-auto" />
+          <img src="/assets/images/sf_logo.png" alt="SF Logo" className="h-9 md:h-[42px] w-auto" />
         </Link>
 
         {/* Desktop Menu */}
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
             <Link
               key={link.label}
               to={link.href}
-              className="font-sans text-[10px] uppercase tracking-[0.2em] text-charcoal hover:text-maroon transition-colors duration-300"
+              className="font-sans text-[15px] uppercase tracking-[0.2em] text-charcoal hover:text-maroon transition-colors duration-300"
             >
               {link.label}
             </Link>
@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
           className="md:hidden z-50 text-charcoal"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <X size={36} /> : <Menu size={36} />}
         </button>
 
         {/* Mobile Menu Overlay */}

@@ -102,7 +102,7 @@ const Hero: React.FC = () => {
            {/* Quote Block - Reduced padding */}
            <div className="max-w-md text-center py-4 md:py-8 px-2 md:px-4">
               <p className="font-serif italic text-sm md:text-4xl text-charcoal leading-tight">
-                "Let's create and capture memories through our lenses that you can cherish for life."
+                "For moments that deserve to be remembered exactly as they felt"
               </p>
            </div>
 
