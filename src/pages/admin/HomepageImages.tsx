@@ -21,7 +21,8 @@ const POSITION_LABELS = [
   'Hero: Right Column - Movement',
   'Hero: Right Column - Nature',
   'Hero: Right Column - Tall',
-  'Intro: Main Portrait (Right)'
+  'Intro: Main Portrait (Right)',
+  'Philosophy: Detail Shot (Left)'
 ];
 
 export default function HomepageImages() {
@@ -193,7 +194,7 @@ export default function HomepageImages() {
       )}
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((position) => {
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((position) => {
           const image = images.find(img => img.position === position);
           const isUploading = uploading === position;
 
