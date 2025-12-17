@@ -43,6 +43,7 @@ export default function About() {
   const [images, setImages] = useState<Record<string, AboutImage>>({});
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getPageSEO('about').then(setSeoSettings);
     loadImages();
   }, []);
@@ -172,7 +173,7 @@ export default function About() {
               <p className="text-white/90 text-sm tracking-[0.2em] uppercase">Years Experience</p>
             </div>
             <div className="text-center border border-white/20 p-8 backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-colors">
-              <div className="text-5xl font-light text-maroon mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>200+</div>
+              <div className="text-5xl font-light text-maroon mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>100+</div>
               <p className="text-white/90 text-sm tracking-[0.2em] uppercase">Sessions Captured</p>
             </div>
             <div className="text-center border border-white/20 p-8 backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-colors">
@@ -246,7 +247,7 @@ export default function About() {
                 </div>
               </div>
               <p className="text-lg text-neutral-600 leading-relaxed mb-10">
-                So I started <span className="font-semibold text-neutral-900">Syncing Films</span>, to offer others what I missed — honest, timeless portraits you will hang proudly, and feel those emotions your whole life. My style is simple, genuine, and soulful, influenced by vibrant cultures, meaningful moments, and the beauty of life's little details.
+                So I started <span className="font-semibold text-neutral-900">SynCing Films</span>, to offer others what I missed - honest, timeless portraits you will hang proudly, and feel those emotions your whole life. My style is simple, genuine, and soulful, influenced by vibrant cultures, meaningful moments, and the beauty of life's little details.
               </p>
               <Link
                 to="/stories"
