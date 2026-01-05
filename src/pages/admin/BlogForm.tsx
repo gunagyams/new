@@ -145,31 +145,64 @@ export default function BlogForm() {
 
     try {
       const data = {
-        ...formData,
+        title: formData.title,
+        slug: formData.slug,
+        excerpt: formData.excerpt,
+        content: formData.content,
+        image: formData.image,
+        category: formData.category,
+        published: formData.published || false,
         updated_at: new Date().toISOString(),
         published_at: formData.published ? (formData.published_at || new Date().toISOString()) : null,
+        seo_title: formData.seo_title || null,
+        seo_description: formData.seo_description || null,
+        seo_keywords: formData.seo_keywords || null,
+        seo_focus_keyword: formData.seo_focus_keyword || null,
+        og_title: formData.og_title || null,
+        og_description: formData.og_description || null,
+        og_image: formData.og_image || null,
+        twitter_title: formData.twitter_title || null,
+        twitter_description: formData.twitter_description || null,
+        canonical_url: formData.canonical_url || null,
+        robots_meta: formData.robots_meta || 'index, follow',
       };
 
+      console.log('Submitting blog post data:', data);
+
       if (isEdit && id) {
-        const { error } = await supabase
+        const { data: result, error } = await supabase
           .from('blog_posts')
           .update(data)
-          .eq('id', id);
+          .eq('id', id)
+          .select();
 
-        if (error) throw error;
+        if (error) {
+          console.error('Update error:', error);
+          throw error;
+        }
+        console.log('Update successful:', result);
       } else {
-        const { error } = await supabase.from('blog_posts').insert([{
+        const { data: result, error } = await supabase.from('blog_posts').insert([{
           ...data,
           created_at: new Date().toISOString(),
-        }]);
+        }]).select();
 
-        if (error) throw error;
+        if (error) {
+          console.error('Insert error:', error);
+          throw error;
+        }
+        console.log('Insert successful:', result);
       }
 
+      alert('Blog post saved successfully!');
       navigate('/admin/blog');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving post:', error);
-      alert('Failed to save post');
+      const errorMessage = error?.message || 'Unknown error occurred';
+      const errorDetails = error?.details || '';
+      const errorHint = error?.hint || '';
+
+      alert(`Failed to save post:\n${errorMessage}${errorDetails ? '\nDetails: ' + errorDetails : ''}${errorHint ? '\nHint: ' + errorHint : ''}`);
     } finally {
       setLoading(false);
     }
