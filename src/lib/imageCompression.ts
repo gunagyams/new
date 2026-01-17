@@ -49,6 +49,10 @@ export async function compressFeaturedImage(file: File): Promise<Blob> {
   return compressImage(file, 1200, 800, 0.85);
 }
 
+export async function compressContentImage(file: File): Promise<Blob> {
+  return compressImage(file, 1000, 1000, 0.8);
+}
+
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 Bytes';
   const k = 1024;

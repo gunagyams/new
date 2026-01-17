@@ -1,5 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
@@ -18,6 +18,8 @@ import {
   Link as LinkIcon,
   ImageIcon,
 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { compressContentImage } from '../lib/imageCompression';
 
 interface RichTextEditorProps {
   content: string;
@@ -26,6 +28,8 @@ interface RichTextEditorProps {
 }
 
 export default function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
+  const [uploading, setUploading] = useState(false);
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -65,20 +69,64 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     }
   };
 
-  const addImage = () => {
-    const url = prompt('Enter image URL:');
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const compressed = await compressContentImage(file);
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.webp`;
+      const filePath = `blog-images/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('blog-images')
+        .upload(filePath, compressed);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('blog-images')
+        .getPublicUrl(filePath);
+
+      editor.chain().focus().setImage({ src: publicUrl }).run();
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setUploading(false);
+      if (imageInputRef.current) {
+        imageInputRef.current.value = '';
+      }
     }
   };
 
-  const MenuButton = ({ onClick, active, children, title }: any) => (
+  const addImage = () => {
+    const choice = confirm('Do you want to upload an image from your computer?\n\nClick OK to upload, or Cancel to enter a URL.');
+
+    if (choice) {
+      imageInputRef.current?.click();
+    } else {
+      const url = prompt('Enter image URL:');
+      if (url) {
+        editor.chain().focus().setImage({ src: url }).run();
+      }
+    }
+  };
+
+  const MenuButton = ({ onClick, active, children, title, disabled }: any) => (
     <button
       type="button"
       onClick={onClick}
+      disabled={disabled}
       className={`p-2 rounded hover:bg-neutral-100 transition-colors ${
         active ? 'bg-neutral-200' : ''
-      }`}
+      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >
       {children}
@@ -87,6 +135,13 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
 
   return (
     <div className="border border-neutral-300 rounded-lg overflow-hidden">
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleImageUpload}
+        className="hidden"
+      />
       <div className="bg-neutral-50 border-b border-neutral-300 p-2 flex flex-wrap gap-1">
         <MenuButton
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -156,7 +211,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         <MenuButton onClick={addLink} active={editor.isActive('link')} title="Add Link">
           <LinkIcon className="w-4 h-4" />
         </MenuButton>
-        <MenuButton onClick={addImage} title="Add Image">
+        <MenuButton onClick={addImage} title={uploading ? "Uploading..." : "Add Image"} disabled={uploading}>
           <ImageIcon className="w-4 h-4" />
         </MenuButton>
 
