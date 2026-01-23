@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Lock } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Project } from '../../lib/types';
+import PasswordModal from '../PasswordModal';
 
 const Gallery: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     fetchProjects();
@@ -36,20 +40,22 @@ const Gallery: React.FC = () => {
     }
 
     if (project.is_locked) {
-      const enteredPassword = prompt('This gallery is password protected. Please enter the password:');
-
-      if (enteredPassword === null) {
-        return;
-      }
-
-      if (enteredPassword === project.access_code) {
-        window.open(project.gallery_url, '_blank');
-      } else {
-        alert('Incorrect password. Please try again.');
-      }
+      setSelectedProject(project);
+      setShowModal(true);
     } else {
       window.open(project.gallery_url, '_blank');
     }
+  };
+
+  const handlePasswordSuccess = (url: string) => {
+    window.open(url, '_blank');
+    setShowModal(false);
+    setSelectedProject(null);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedProject(null);
   };
 
   if (loading) {
@@ -98,6 +104,14 @@ const Gallery: React.FC = () => {
                       <span className="text-charcoal/40">No image</span>
                     </div>
                   )}
+                  {project.is_locked && (
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="text-white text-center">
+                        <Lock className="w-8 h-8 mx-auto mb-3" />
+                        <p className="text-xs tracking-wider uppercase">Private Gallery</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
                   <div className="text-white">
@@ -114,6 +128,15 @@ const Gallery: React.FC = () => {
           </div>
         )}
       </div>
+
+      {selectedProject && (
+        <PasswordModal
+          project={selectedProject}
+          isOpen={showModal}
+          onClose={handleModalClose}
+          onSuccess={handlePasswordSuccess}
+        />
+      )}
     </section>
   );
 };

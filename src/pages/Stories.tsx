@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Lock, X } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '../lib/supabase';
 import { Project } from '../lib/types';
 import { getPageSEO, type PageSEOSettings } from '../lib/seo';
+import PasswordModal from '../components/PasswordModal';
 
 export default function Stories() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -11,8 +12,6 @@ export default function Stories() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [accessCode, setAccessCode] = useState('');
-  const [error, setError] = useState('');
   const [seoSettings, setSeoSettings] = useState<PageSEOSettings | null>(null);
 
   useEffect(() => {
@@ -56,27 +55,20 @@ export default function Stories() {
     if (project.is_locked) {
       setSelectedProject(project);
       setShowModal(true);
-      setError('');
-      setAccessCode('');
     } else if (project.gallery_url) {
       window.open(project.gallery_url, '_blank');
     }
   };
 
-  const handleAccessSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  const handlePasswordSuccess = (url: string) => {
+    window.open(url, '_blank');
+    setShowModal(false);
+    setSelectedProject(null);
+  };
 
-    if (selectedProject && accessCode.toLowerCase() === selectedProject.access_code?.toLowerCase()) {
-      if (selectedProject.gallery_url) {
-        window.open(selectedProject.gallery_url, '_blank');
-      }
-      setShowModal(false);
-      setAccessCode('');
-      setSelectedProject(null);
-    } else {
-      setError('Invalid access code. Please try again or contact us for assistance.');
-    }
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedProject(null);
   };
 
   if (loading) {
@@ -191,64 +183,13 @@ export default function Stories() {
         </div>
       </section>
 
-      {showModal && selectedProject && (
-        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-          <div className="bg-white max-w-md w-full p-12 relative">
-            <button
-              onClick={() => {
-                setShowModal(false);
-                setAccessCode('');
-                setError('');
-                setSelectedProject(null);
-              }}
-              className="absolute top-6 right-6 text-neutral-400 hover:text-neutral-600"
-            >
-              <X className="w-6 h-6" />
-            </button>
-
-            <div className="flex justify-center mb-8">
-              <div className="w-16 h-16 bg-neutral-100 flex items-center justify-center">
-                <Lock className="w-8 h-8 text-neutral-600" />
-              </div>
-            </div>
-            <h3 className="text-xs tracking-[0.3em] uppercase text-neutral-500 text-center mb-3">
-              Private Gallery
-            </h3>
-            <p className="text-2xl text-center mb-6 text-neutral-800" style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400 }}>
-              {selectedProject.client_names || selectedProject.title}
-            </p>
-            <p className="text-sm text-neutral-500 text-center mb-8 leading-relaxed">
-              This gallery is password protected. Please enter your access code to view the photos.
-            </p>
-            <form onSubmit={handleAccessSubmit} className="space-y-6">
-              <div>
-                <input
-                  type="text"
-                  value={accessCode}
-                  onChange={(e) => {
-                    setAccessCode(e.target.value);
-                    setError('');
-                  }}
-                  required
-                  className="w-full px-4 py-4 border border-neutral-300 text-sm focus:border-maroon focus:outline-none uppercase tracking-wider text-center"
-                  placeholder="ENTER ACCESS CODE"
-                />
-                {error && (
-                  <p className="text-red-600 text-xs mt-2 text-center">{error}</p>
-                )}
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-maroon hover:bg-maroon-dark text-white py-4 text-xs tracking-[0.2em] uppercase transition-colors"
-              >
-                View Gallery
-              </button>
-            </form>
-            <p className="text-xs text-neutral-500 text-center mt-6">
-              Need help? <a href="/contact" className="text-maroon hover:underline">Contact us</a>
-            </p>
-          </div>
-        </div>
+      {selectedProject && (
+        <PasswordModal
+          project={selectedProject}
+          isOpen={showModal}
+          onClose={handleModalClose}
+          onSuccess={handlePasswordSuccess}
+        />
       )}
     </div>
   );
