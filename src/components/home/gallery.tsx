@@ -35,7 +35,7 @@ const Gallery: React.FC = () => {
       return;
     }
 
-    if (project.is_locked && project.access_code) {
+    if (project.is_locked) {
       const enteredPassword = prompt('This gallery is password protected. Please enter the password:');
 
       if (enteredPassword === null) {
