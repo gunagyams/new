@@ -29,6 +29,29 @@ const Gallery: React.FC = () => {
     }
   };
 
+  const handleProjectClick = (project: Project) => {
+    if (!project.gallery_url) {
+      alert('Gallery link not available for this project.');
+      return;
+    }
+
+    if (project.is_locked && project.access_code) {
+      const enteredPassword = prompt('This gallery is password protected. Please enter the password:');
+
+      if (enteredPassword === null) {
+        return;
+      }
+
+      if (enteredPassword === project.access_code) {
+        window.open(project.gallery_url, '_blank');
+      } else {
+        alert('Incorrect password. Please try again.');
+      }
+    } else {
+      window.open(project.gallery_url, '_blank');
+    }
+  };
+
   if (loading) {
     return (
       <section id="gallery" className="py-24 bg-cream">
@@ -60,6 +83,7 @@ const Gallery: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                onClick={() => handleProjectClick(project)}
                 className={`relative overflow-hidden group cursor-pointer ${index % 2 === 0 ? 'md:mt-12' : ''}`}
               >
                 <div className="aspect-[3/4] overflow-hidden bg-sand">
