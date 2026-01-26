@@ -10,10 +10,10 @@ const Testimonials: React.FC = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.4 }}
           className="text-center mb-16"
         >
           <h2 className="font-serif text-4xl md:text-5xl text-charcoal mb-4">What Clients Say</h2>
@@ -24,11 +24,11 @@ const Testimonials: React.FC = () => {
           {TESTIMONIALS.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="bg-white p-8 shadow-lg hover:shadow-xl transition-shadow"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.4, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+              className="bg-white p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
               <p className="font-serif italic text-lg text-charcoal leading-relaxed mb-6">
                 "{testimonial.quote}"

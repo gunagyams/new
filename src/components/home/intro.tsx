@@ -51,10 +51,10 @@ const Intro: React.FC = () => {
 
         {/* Left: Text */}
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
+          initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-20%" }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <span className="block font-sans text-xs text-maroon uppercase tracking-[0.25em] mb-6">
             The Philosophy
@@ -77,29 +77,33 @@ const Intro: React.FC = () => {
         {/* Right: Image Composition */}
         <div className="relative h-[600px] w-full">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
             className="absolute top-0 right-0 w-3/4 h-[500px] overflow-hidden bg-sand"
           >
              <img
                src={getImageUrl(8, 'https://picsum.photos/id/250/600/800')}
                alt={getImageAlt(8, 'Main portrait')}
+               loading="lazy"
+               decoding="async"
                className="w-full h-full object-cover"
              />
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
             className="absolute bottom-0 left-0 w-1/2 h-[350px] overflow-hidden border-8 border-cream"
           >
             <img
                src={getImageUrl(9, 'https://picsum.photos/id/319/400/600')}
                alt={getImageAlt(9, 'Detail shot')}
+               loading="lazy"
+               decoding="async"
                className="w-full h-full object-cover"
              />
           </motion.div>

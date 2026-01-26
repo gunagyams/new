@@ -87,10 +87,12 @@ const Services: React.FC = () => {
               loop
               muted
               playsInline
+              preload="none"
+              loading="lazy"
             />
           ) : (
             <div
-              className="absolute inset-0 w-full h-full bg-cover bg-center"
+              className="absolute inset-0 w-full h-full bg-cover bg-center bg-fixed"
               style={{ backgroundImage: `url(${background.media_url})` }}
             />
           )}
@@ -110,14 +112,14 @@ const Services: React.FC = () => {
             return (
               <motion.div
                 key={service.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.4, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                 className="text-center flex flex-col items-center group"
               >
-                <div className="mb-6 p-4 rounded-full border border-white/20 group-hover:border-maroon/50 transition-colors duration-500 bg-white/5 backdrop-blur-sm">
-                  <Icon strokeWidth={1} size={32} className="text-white group-hover:text-maroon transition-colors duration-500" />
+                <div className="mb-6 p-4 rounded-full border border-white/20 group-hover:border-maroon/50 transition-colors duration-300 bg-white/5 backdrop-blur-sm">
+                  <Icon strokeWidth={1} size={32} className="text-white group-hover:text-maroon transition-colors duration-300" />
                 </div>
                 <h3 className="font-serif italic text-2xl text-white mb-4">{service.title}</h3>
                 <p className="font-sans text-sm leading-relaxed text-white/80 max-w-xs mx-auto">

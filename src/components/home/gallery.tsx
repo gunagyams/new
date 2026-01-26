@@ -85,10 +85,10 @@ const Gallery: React.FC = () => {
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                viewport={{ once: true, margin: "-100px", amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.05, ease: [0.25, 0.1, 0.25, 1] }}
                 onClick={() => handleProjectClick(project)}
                 className={`relative overflow-hidden group cursor-pointer ${index % 2 === 0 ? 'md:mt-12' : ''}`}
               >
@@ -97,7 +97,9 @@ const Gallery: React.FC = () => {
                     <img
                       src={project.thumbnail_url}
                       alt={project.client_names || project.title}
-                      className="w-full h-full object-contain transition-all duration-700 ease-in-out group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-contain transition-transform duration-500 ease-out will-change-transform group-hover:scale-105"
                     />
                   ) : (
                     <div className="w-full h-full bg-sand flex items-center justify-center">
@@ -113,7 +115,7 @@ const Gallery: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                   <div className="text-white">
                     <p className="font-sans text-[10px] tracking-[0.2em] uppercase mb-1">
                       {project.event_type || 'Wedding'}

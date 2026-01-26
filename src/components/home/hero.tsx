@@ -72,7 +72,9 @@ const Hero: React.FC = () => {
               <img
                 src={getImageUrl(0)}
                 alt={getImageAlt(0, "Bride Portrait")}
-                className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-105"
               />
            </div>
 
@@ -81,7 +83,9 @@ const Hero: React.FC = () => {
                <img
                  src={getImageUrl(2)}
                  alt={getImageAlt(2, "Detail Shot")}
-                 className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                 loading="lazy"
+                 decoding="async"
+                 className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
                />
            </div>
         </div>
@@ -95,7 +99,9 @@ const Hero: React.FC = () => {
               <img
                 src={getImageUrl(1)}
                 alt={getImageAlt(1, "Couple Portrait")}
-                className="w-full h-full object-cover transition-all duration-1000 ease-in-out transform group-hover:scale-105"
+                fetchPriority="high"
+                decoding="async"
+                className="w-full h-full object-cover transition-transform duration-700 ease-in-out will-change-transform group-hover:scale-105"
               />
            </div>
 
@@ -111,7 +117,9 @@ const Hero: React.FC = () => {
                <img
                  src={getImageUrl(4)}
                  alt={getImageAlt(4, "Intimate Moment")}
-                 className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                 loading="lazy"
+                 decoding="async"
+                 className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
                />
            </div>
         </div>
@@ -131,7 +139,9 @@ const Hero: React.FC = () => {
                <img
                  src={getImageUrl(5)}
                  alt={getImageAlt(5, "Movement")}
-                 className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                 loading="lazy"
+                 decoding="async"
+                 className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
                />
            </div>
 
@@ -140,7 +150,9 @@ const Hero: React.FC = () => {
                <img
                  src={getImageUrl(6)}
                  alt={getImageAlt(6, "Landscape")}
-                 className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                 loading="lazy"
+                 decoding="async"
+                 className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
                />
            </div>
         </div>
