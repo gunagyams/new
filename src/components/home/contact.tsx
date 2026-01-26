@@ -9,13 +9,20 @@ const Contact: React.FC = () => {
           <p className="font-sans text-charcoal/70">For the wildly in love. Tell us your story.</p>
         </div>
 
-        <iframe
-          src="https://deepskyblue-cormorant-766129.hostingersite.com/"
-          className="w-full border-0 bg-transparent"
-          style={{ minHeight: '800px', background: 'transparent' }}
-          title="Contact Form"
-          allowTransparency={true}
-        />
+        <div className="overflow-hidden -mx-6 md:-mx-12">
+          <iframe
+            src="https://deepskyblue-cormorant-766129.hostingersite.com/"
+            className="w-full border-0 bg-transparent"
+            style={{
+              minHeight: '800px',
+              background: 'transparent',
+              marginTop: '-2rem',
+              marginBottom: '-2rem'
+            }}
+            title="Contact Form"
+            allowTransparency={true}
+          />
+        </div>
       </div>
     </section>
   );
