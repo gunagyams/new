@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
 
 interface HomepageImage {
@@ -61,33 +62,49 @@ const Hero: React.FC = () => {
         {/* --- LEFT COLUMN (Text + Tall Bride + Detail) --- */}
         <div className="col-span-3 flex flex-col gap-4 md:gap-10 mt-12 md:mt-24 z-10">
            {/* Header Text */}
-           <div className="text-left">
+           <motion.div
+             initial={{ opacity: 0, x: -30 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             viewport={{ once: true, amount: 0.3 }}
+             transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+             className="text-left"
+           >
               <h2 className="font-sans text-[6px] md:text-[10px] tracking-[0.3em] uppercase leading-loose text-charcoal/80 border-l-2 border-maroon/30 pl-2 md:pl-4">
                 Timeless Elegance <br/> Captured Forever
               </h2>
-           </div>
-           
+           </motion.div>
+
            {/* Image: Bride Portrait - TALL (aspect-[1/2]) */}
-           <div className="w-full aspect-[1/2] relative group overflow-hidden">
+           <motion.div
+             initial={{ opacity: 0, y: 50, scale: 0.95 }}
+             whileInView={{ opacity: 1, y: 0, scale: 1 }}
+             viewport={{ once: true, amount: 0.2 }}
+             transition={{ duration: 0.9, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+             className="w-full aspect-[1/2] relative group overflow-hidden"
+           >
               <img
                 src={getImageUrl(0)}
                 alt={getImageAlt(0, "Bride Portrait")}
-                loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-105"
               />
-           </div>
+           </motion.div>
 
            {/* Image: Darker Detail (Smaller) */}
-           <div className="w-3/4 aspect-square ml-auto relative group overflow-hidden mt-2 md:mt-4">
+           <motion.div
+             initial={{ opacity: 0, y: 40, scale: 0.9 }}
+             whileInView={{ opacity: 1, y: 0, scale: 1 }}
+             viewport={{ once: true, amount: 0.3 }}
+             transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+             className="w-3/4 aspect-square ml-auto relative group overflow-hidden mt-2 md:mt-4"
+           >
                <img
                  src={getImageUrl(2)}
                  alt={getImageAlt(2, "Detail Shot")}
-                 loading="lazy"
                  decoding="async"
                  className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
                />
-           </div>
+           </motion.div>
         </div>
 
 
@@ -95,7 +112,13 @@ const Hero: React.FC = () => {
         <div className="col-span-6 flex flex-col items-center gap-6 md:gap-12 z-20">
 
            {/* Main Hero Image - TALL (aspect-[2/3]) */}
-           <div className="w-10/12 aspect-[3/4] relative group shadow-sm hover:shadow-xl transition-shadow duration-500 overflow-hidden">
+           <motion.div
+             initial={{ opacity: 0, scale: 0.9, y: 60 }}
+             whileInView={{ opacity: 1, scale: 1, y: 0 }}
+             viewport={{ once: true, amount: 0.2 }}
+             transition={{ duration: 1, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+             className="w-10/12 aspect-[3/4] relative group shadow-sm hover:shadow-xl transition-shadow duration-500 overflow-hidden"
+           >
               <img
                 src={getImageUrl(1)}
                 alt={getImageAlt(1, "Couple Portrait")}
@@ -103,58 +126,85 @@ const Hero: React.FC = () => {
                 decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 ease-in-out will-change-transform group-hover:scale-105"
               />
-           </div>
+           </motion.div>
 
            {/* Quote Block - Reduced padding */}
-           <div className="max-w-md text-center py-4 md:py-8 px-2 md:px-4">
+           <motion.div
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true, amount: 0.5 }}
+             transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+             className="max-w-md text-center py-4 md:py-8 px-2 md:px-4"
+           >
               <p className="font-serif italic text-sm md:text-4xl text-charcoal leading-tight">
                 "For moments that deserve to be remembered exactly as they felt"
               </p>
-           </div>
+           </motion.div>
 
            {/* Secondary Image (Landscape/Sitting) */}
-           <div className="w-10/12 aspect-[4/3] relative group overflow-hidden shadow-md">
+           <motion.div
+             initial={{ opacity: 0, y: 50, scale: 0.95 }}
+             whileInView={{ opacity: 1, y: 0, scale: 1 }}
+             viewport={{ once: true, amount: 0.2 }}
+             transition={{ duration: 0.9, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+             className="w-10/12 aspect-[4/3] relative group overflow-hidden shadow-md"
+           >
                <img
                  src={getImageUrl(4)}
                  alt={getImageAlt(4, "Intimate Moment")}
-                 loading="lazy"
                  decoding="async"
                  className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
                />
-           </div>
+           </motion.div>
         </div>
 
 
         {/* --- RIGHT COLUMN (Text + Movement + Tall Nature) --- */}
         <div className="col-span-3 flex flex-col gap-6 md:gap-12 mt-4 md:mt-8 z-10">
            {/* Header Text */}
-           <div className="text-right">
+           <motion.div
+             initial={{ opacity: 0, x: 30 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             viewport={{ once: true, amount: 0.3 }}
+             transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+             className="text-right"
+           >
               <h2 className="font-sans text-[6px] md:text-[10px] tracking-[0.3em] uppercase leading-loose text-charcoal/80 border-r-2 border-maroon/30 pr-2 md:pr-4">
                 Moments become <br/> Memories, Forever
               </h2>
-           </div>
+           </motion.div>
 
            {/* Image: Walking/Movement */}
-           <div className="w-full aspect-[3/4] relative group overflow-hidden mt-0 md:mt-12">
+           <motion.div
+             initial={{ opacity: 0, y: 50, scale: 0.95 }}
+             whileInView={{ opacity: 1, y: 0, scale: 1 }}
+             viewport={{ once: true, amount: 0.2 }}
+             transition={{ duration: 0.9, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+             className="w-full aspect-[3/4] relative group overflow-hidden mt-0 md:mt-12"
+           >
                <img
                  src={getImageUrl(5)}
                  alt={getImageAlt(5, "Movement")}
-                 loading="lazy"
                  decoding="async"
                  className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
                />
-           </div>
+           </motion.div>
 
            {/* Image: Nature/Landscape - TALL (aspect-[1/2]) */}
-           <div className="w-full aspect-[1/2] relative group overflow-hidden shadow-lg">
+           <motion.div
+             initial={{ opacity: 0, y: 40, scale: 0.9 }}
+             whileInView={{ opacity: 1, y: 0, scale: 1 }}
+             viewport={{ once: true, amount: 0.3 }}
+             transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+             className="w-full aspect-[1/2] relative group overflow-hidden shadow-lg"
+           >
                <img
                  src={getImageUrl(6)}
                  alt={getImageAlt(6, "Landscape")}
-                 loading="lazy"
                  decoding="async"
                  className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
                />
-           </div>
+           </motion.div>
         </div>
       </div>
 
