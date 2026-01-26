@@ -1,72 +1,14 @@
 import { MapPin, Phone, Mail, Instagram } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { Helmet } from 'react-helmet-async';
 import { getPageSEO, type PageSEOSettings } from '../lib/seo';
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
-
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    eventDate: '',
-    details: '',
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [seoSettings, setSeoSettings] = useState<PageSEOSettings | null>(null);
 
   useEffect(() => {
     getPageSEO('contact').then(setSeoSettings);
   }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            event_date: formData.eventDate,
-            details: formData.details,
-          },
-        ]);
-
-      if (error) throw error;
-
-      setSubmitted(true);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        eventDate: '',
-        details: '',
-      });
-
-      setTimeout(() => setSubmitted(false), 5000);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const pageTitle = seoSettings?.seo_title || 'Contact Us - Get In Touch';
   const pageDescription = seoSettings?.meta_description || 'Ready to book your photography session? Contact us today to discuss your needs.';
@@ -108,84 +50,12 @@ export default function Contact() {
               <h2 className="text-xs tracking-[0.3em] uppercase text-neutral-500 mb-6">Inquire</h2>
               <h3 className="text-5xl mb-12 text-neutral-800" style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400 }}>Get in Touch</h3>
 
-              {submitted && (
-                <div className="mb-8 bg-white border border-neutral-200 p-6">
-                  <p className="text-neutral-800">
-                    Thank you for your inquiry. We'll be in touch within 24 hours.
-                  </p>
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-maroon focus:outline-none bg-white"
-                      placeholder="YOUR NAME *"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-maroon focus:outline-none bg-white"
-                      placeholder="EMAIL ADDRESS *"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-maroon focus:outline-none bg-white"
-                      placeholder="PHONE NUMBER *"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="date"
-                      name="eventDate"
-                      value={formData.eventDate}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-maroon focus:outline-none bg-white"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <textarea
-                    name="details"
-                    value={formData.details}
-                    onChange={handleChange}
-                    required
-                    rows={8}
-                    className="w-full px-6 py-4 border border-neutral-300 text-sm focus:border-neutral-800 focus:outline-none resize-none bg-white"
-                    placeholder="TELL US ABOUT YOUR VISION – WEDDING DATE, OTHER EVENT DATES, VENUE LOCATIONS, TYPE OF COVERAGE YOU NEED (PHOTO ONLY/PHOTO+VIDEO ETC.) *"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-maroon hover:bg-maroon-dark text-white px-12 py-4 text-xs tracking-[0.2em] uppercase transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? 'Sending...' : 'Send Inquiry'}
-                </button>
-              </form>
+              <iframe
+                src="https://deepskyblue-cormorant-766129.hostingersite.com/"
+                className="w-full border-0"
+                style={{ minHeight: '800px' }}
+                title="Contact Form"
+              />
             </div>
 
             <div className="lg:col-span-2 space-y-12">
