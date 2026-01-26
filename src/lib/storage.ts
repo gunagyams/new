@@ -1,6 +1,6 @@
 import { supabase } from './supabase';
 
-export type StorageBucket = 'images' | 'project-thumbnails' | 'blog-images';
+export type StorageBucket = 'images' | 'project-thumbnails' | 'blog-images' | 'section-media';
 
 export interface UploadImageOptions {
   bucket: StorageBucket;

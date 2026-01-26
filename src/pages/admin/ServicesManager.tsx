@@ -98,9 +98,9 @@ export default function ServicesManager() {
     setUploading(true);
     try {
       const result = await uploadImage({
-        bucket: 'images',
+        bucket: 'section-media',
         file,
-        path: `sections/services-background-${Date.now()}`,
+        path: `services-background-${Date.now()}`,
       });
 
       if (result.error) {
