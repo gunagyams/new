@@ -29,6 +29,7 @@ const BlogList = lazy(() => import('./pages/admin/BlogList'));
 const BlogForm = lazy(() => import('./pages/admin/BlogForm'));
 const PageSEO = lazy(() => import('./pages/admin/PageSEO'));
 const ImagesManager = lazy(() => import('./pages/admin/ImagesManager'));
+const ServicesManager = lazy(() => import('./pages/admin/ServicesManager'));
 
 function AppRoutes() {
   return (
@@ -66,6 +67,7 @@ function App() {
             <Route path="/admin/blog/new" element={<ProtectedRoute><BlogForm /></ProtectedRoute>} />
             <Route path="/admin/blog/:id" element={<ProtectedRoute><BlogForm /></ProtectedRoute>} />
             <Route path="/admin/seo" element={<ProtectedRoute><PageSEO /></ProtectedRoute>} />
+            <Route path="/admin/services" element={<ProtectedRoute><ServicesManager /></ProtectedRoute>} />
 
             {/* Public routes - lazy loaded on navigation */}
             <Route path="/*" element={<AppRoutes />} />
