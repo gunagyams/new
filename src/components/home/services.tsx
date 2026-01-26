@@ -8,10 +8,14 @@ interface Service {
   title: string;
   description: string;
   icon_name: string;
-  media_url: string | null;
-  media_type: 'image' | 'video' | null;
   display_order: number;
   published: boolean;
+}
+
+interface SectionBackground {
+  media_url: string | null;
+  media_type: 'image' | 'video' | null;
+  overlay_opacity: number;
 }
 
 const iconMap: Record<string, React.ElementType> = {
@@ -25,24 +29,33 @@ const iconMap: Record<string, React.ElementType> = {
 
 const Services: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
+  const [background, setBackground] = useState<SectionBackground | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchServices();
+    fetchData();
   }, []);
 
-  const fetchServices = async () => {
+  const fetchData = async () => {
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .eq('published', true)
-        .order('display_order', { ascending: true });
+      const [servicesRes, backgroundRes] = await Promise.all([
+        supabase
+          .from('services')
+          .select('*')
+          .eq('published', true)
+          .order('display_order', { ascending: true }),
+        supabase
+          .from('section_backgrounds')
+          .select('*')
+          .eq('section_key', 'services')
+          .maybeSingle(),
+      ]);
 
-      if (error) throw error;
-      setServices(data || []);
+      if (servicesRes.error) throw servicesRes.error;
+      setServices(servicesRes.data || []);
+      setBackground(backgroundRes.data);
     } catch (error) {
-      console.error('Error fetching services:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
@@ -63,8 +76,33 @@ const Services: React.FC = () => {
   }
 
   return (
-    <section id="services" className="py-24 md:py-36 bg-sand/30">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <section id="services" className="relative py-24 md:py-36 overflow-hidden">
+      {background?.media_url && (
+        <>
+          {background.media_type === 'video' ? (
+            <video
+              src={background.media_url}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          ) : (
+            <div
+              className="absolute inset-0 w-full h-full bg-cover bg-center"
+              style={{ backgroundImage: `url(${background.media_url})` }}
+            />
+          )}
+          <div
+            className="absolute inset-0 bg-black"
+            style={{ opacity: background.overlay_opacity }}
+          />
+        </>
+      )}
+      {!background?.media_url && <div className="absolute inset-0 bg-sand/30" />}
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           {services.map((service, index) => {
             const Icon = iconMap[service.icon_name] || Camera;
@@ -78,32 +116,11 @@ const Services: React.FC = () => {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 className="text-center flex flex-col items-center group"
               >
-                {service.media_url ? (
-                  <div className="mb-6 w-full aspect-video overflow-hidden rounded-lg">
-                    {service.media_type === 'video' ? (
-                      <video
-                        src={service.media_url}
-                        className="w-full h-full object-cover"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                      />
-                    ) : (
-                      <img
-                        src={service.media_url}
-                        alt={service.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                    )}
-                  </div>
-                ) : (
-                  <div className="mb-6 p-4 rounded-full border border-charcoal/10 group-hover:border-maroon/50 transition-colors duration-500">
-                    <Icon strokeWidth={1} size={32} className="text-charcoal group-hover:text-maroon transition-colors duration-500" />
-                  </div>
-                )}
-                <h3 className="font-serif italic text-2xl text-charcoal mb-4">{service.title}</h3>
-                <p className="font-sans text-sm leading-relaxed text-charcoal/70 max-w-xs mx-auto">
+                <div className="mb-6 p-4 rounded-full border border-white/20 group-hover:border-maroon/50 transition-colors duration-500 bg-white/5 backdrop-blur-sm">
+                  <Icon strokeWidth={1} size={32} className="text-white group-hover:text-maroon transition-colors duration-500" />
+                </div>
+                <h3 className="font-serif italic text-2xl text-white mb-4">{service.title}</h3>
+                <p className="font-sans text-sm leading-relaxed text-white/80 max-w-xs mx-auto">
                   {service.description}
                 </p>
               </motion.div>

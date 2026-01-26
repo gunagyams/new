@@ -8,16 +8,23 @@ interface Service {
   title: string;
   description: string;
   icon_name: string;
-  media_url: string | null;
-  media_type: 'image' | 'video' | null;
   display_order: number;
   published: boolean;
   created_at: string;
   updated_at: string;
 }
 
+interface SectionBackground {
+  id: string;
+  section_key: string;
+  media_url: string | null;
+  media_type: 'image' | 'video' | null;
+  overlay_opacity: number;
+}
+
 export default function ServicesManager() {
   const [services, setServices] = useState<Service[]>([]);
+  const [background, setBackground] = useState<SectionBackground | null>(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
@@ -27,36 +34,56 @@ export default function ServicesManager() {
     title: '',
     description: '',
     icon_name: 'Camera',
-    media_url: '',
-    media_type: null as 'image' | 'video' | null,
     display_order: 0,
     published: true,
+  });
+
+  const [backgroundForm, setBackgroundForm] = useState({
+    media_url: '',
+    media_type: null as 'image' | 'video' | null,
+    overlay_opacity: 0.5,
   });
 
   const iconOptions = ['Camera', 'Film', 'Heart', 'Sparkles', 'Award', 'Users'];
 
   useEffect(() => {
-    fetchServices();
+    fetchData();
   }, []);
 
-  const fetchServices = async () => {
+  const fetchData = async () => {
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .order('display_order', { ascending: true });
+      const [servicesRes, backgroundRes] = await Promise.all([
+        supabase
+          .from('services')
+          .select('*')
+          .order('display_order', { ascending: true }),
+        supabase
+          .from('section_backgrounds')
+          .select('*')
+          .eq('section_key', 'services')
+          .maybeSingle(),
+      ]);
 
-      if (error) throw error;
-      setServices(data || []);
+      if (servicesRes.error) throw servicesRes.error;
+      setServices(servicesRes.data || []);
+
+      if (backgroundRes.data) {
+        setBackground(backgroundRes.data);
+        setBackgroundForm({
+          media_url: backgroundRes.data.media_url || '',
+          media_type: backgroundRes.data.media_type,
+          overlay_opacity: backgroundRes.data.overlay_opacity,
+        });
+      }
     } catch (error) {
-      console.error('Error fetching services:', error);
-      alert('Failed to load services');
+      console.error('Error fetching data:', error);
+      alert('Failed to load data');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBackgroundUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -73,15 +100,15 @@ export default function ServicesManager() {
       const result = await uploadImage({
         bucket: 'images',
         file,
-        path: `services/${file.name}`,
+        path: `sections/services-background-${Date.now()}`,
       });
 
       if (result.error) {
         throw new Error(result.error);
       }
 
-      setFormData({
-        ...formData,
+      setBackgroundForm({
+        ...backgroundForm,
         media_url: result.url,
         media_type: isVideo ? 'video' : 'image',
       });
@@ -90,6 +117,72 @@ export default function ServicesManager() {
       alert('Failed to upload media');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleSaveBackground = async () => {
+    setLoading(true);
+    try {
+      if (background) {
+        const { error } = await supabase
+          .from('section_backgrounds')
+          .update({
+            media_url: backgroundForm.media_url,
+            media_type: backgroundForm.media_type,
+            overlay_opacity: backgroundForm.overlay_opacity,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', background.id);
+
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('section_backgrounds')
+          .insert([{
+            section_key: 'services',
+            media_url: backgroundForm.media_url,
+            media_type: backgroundForm.media_type,
+            overlay_opacity: backgroundForm.overlay_opacity,
+          }]);
+
+        if (error) throw error;
+      }
+
+      await fetchData();
+      alert('Background saved successfully');
+    } catch (error) {
+      console.error('Error saving background:', error);
+      alert('Failed to save background');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemoveBackground = async () => {
+    if (!background) return;
+    if (!confirm('Remove background media?')) return;
+
+    try {
+      const { error } = await supabase
+        .from('section_backgrounds')
+        .update({
+          media_url: null,
+          media_type: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', background.id);
+
+      if (error) throw error;
+
+      setBackgroundForm({
+        media_url: '',
+        media_type: null,
+        overlay_opacity: 0.5,
+      });
+      await fetchData();
+    } catch (error) {
+      console.error('Error removing background:', error);
+      alert('Failed to remove background');
     }
   };
 
@@ -116,7 +209,7 @@ export default function ServicesManager() {
         if (error) throw error;
       }
 
-      await fetchServices();
+      await fetchData();
       resetForm();
       setShowModal(false);
     } catch (error) {
@@ -133,8 +226,6 @@ export default function ServicesManager() {
       title: service.title,
       description: service.description,
       icon_name: service.icon_name,
-      media_url: service.media_url || '',
-      media_type: service.media_type,
       display_order: service.display_order,
       published: service.published,
     });
@@ -151,7 +242,7 @@ export default function ServicesManager() {
         .eq('id', id);
 
       if (error) throw error;
-      await fetchServices();
+      await fetchData();
     } catch (error) {
       console.error('Error deleting service:', error);
       alert('Failed to delete service');
@@ -164,8 +255,6 @@ export default function ServicesManager() {
       title: '',
       description: '',
       icon_name: 'Camera',
-      media_url: '',
-      media_type: null,
       display_order: services.length,
       published: true,
     });
@@ -189,7 +278,7 @@ export default function ServicesManager() {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Services</h1>
-          <p className="text-gray-600 mt-1">Manage your service offerings</p>
+          <p className="text-gray-600 mt-1">Manage your service offerings and section background</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -200,6 +289,102 @@ export default function ServicesManager() {
         </button>
       </div>
 
+      <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Section Background</h2>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Background Media (Image or Video)
+            </label>
+            <div className="space-y-3">
+              <div className="flex items-center gap-4">
+                <label className="flex-1 cursor-pointer">
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors">
+                    <Upload className="mx-auto mb-2 text-gray-400" size={32} />
+                    <p className="text-sm text-gray-600">
+                      {uploading ? 'Uploading...' : 'Click to upload background image or video'}
+                    </p>
+                    <input
+                      type="file"
+                      accept="image/*,video/*"
+                      onChange={handleBackgroundUpload}
+                      disabled={uploading}
+                      className="hidden"
+                    />
+                  </div>
+                </label>
+              </div>
+
+              {backgroundForm.media_url && (
+                <div className="relative">
+                  {backgroundForm.media_type === 'video' ? (
+                    <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+                      <video
+                        src={backgroundForm.media_url}
+                        controls
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                        <FilmIcon size={12} />
+                        Video Background
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+                      <img
+                        src={backgroundForm.media_url}
+                        alt="Background preview"
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                        <Image size={12} />
+                        Image Background
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleRemoveBackground}
+                    className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded hover:bg-red-700"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Overlay Opacity: {backgroundForm.overlay_opacity}
+            </label>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.1"
+              value={backgroundForm.overlay_opacity}
+              onChange={(e) =>
+                setBackgroundForm({ ...backgroundForm, overlay_opacity: parseFloat(e.target.value) })
+              }
+              className="w-full"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Controls the darkness of the overlay on top of the background
+            </p>
+          </div>
+
+          <button
+            onClick={handleSaveBackground}
+            disabled={loading || uploading}
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? 'Saving...' : 'Save Background'}
+          </button>
+        </div>
+      </div>
+
       <div className="grid gap-6">
         {services.map((service) => (
           <div
@@ -207,23 +392,6 @@ export default function ServicesManager() {
             className="bg-white border border-gray-200 rounded-lg p-6"
           >
             <div className="flex gap-6">
-              {service.media_url && (
-                <div className="w-48 h-32 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
-                  {service.media_type === 'video' ? (
-                    <video
-                      src={service.media_url}
-                      className="w-full h-full object-cover"
-                      muted
-                    />
-                  ) : (
-                    <img
-                      src={service.media_url}
-                      alt={service.title}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-              )}
               <div className="flex-1">
                 <div className="flex items-start justify-between mb-2">
                   <div>
@@ -328,70 +496,6 @@ export default function ServicesManager() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Media (Image or Video)
-                </label>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-4">
-                    <label className="flex-1 cursor-pointer">
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors">
-                        <Upload className="mx-auto mb-2 text-gray-400" size={32} />
-                        <p className="text-sm text-gray-600">
-                          {uploading ? 'Uploading...' : 'Click to upload image or video'}
-                        </p>
-                        <input
-                          type="file"
-                          accept="image/*,video/*"
-                          onChange={handleFileUpload}
-                          disabled={uploading}
-                          className="hidden"
-                        />
-                      </div>
-                    </label>
-                  </div>
-
-                  {formData.media_url && (
-                    <div className="relative">
-                      {formData.media_type === 'video' ? (
-                        <div className="relative bg-gray-100 rounded-lg overflow-hidden">
-                          <video
-                            src={formData.media_url}
-                            controls
-                            className="w-full h-48 object-cover"
-                          />
-                          <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
-                            <FilmIcon size={12} />
-                            Video
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="relative bg-gray-100 rounded-lg overflow-hidden">
-                          <img
-                            src={formData.media_url}
-                            alt="Preview"
-                            className="w-full h-48 object-cover"
-                          />
-                          <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
-                            <Image size={12} />
-                            Image
-                          </div>
-                        </div>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setFormData({ ...formData, media_url: '', media_type: null })
-                        }
-                        className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded hover:bg-red-700"
-                      >
-                        <X size={16} />
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -428,7 +532,7 @@ export default function ServicesManager() {
               <div className="flex gap-4 pt-4">
                 <button
                   type="submit"
-                  disabled={loading || uploading}
+                  disabled={loading}
                   className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? 'Saving...' : editingService ? 'Update Service' : 'Add Service'}
