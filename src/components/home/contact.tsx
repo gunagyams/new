@@ -11,9 +11,10 @@ const Contact: React.FC = () => {
 
         <iframe
           src="https://deepskyblue-cormorant-766129.hostingersite.com/"
-          className="w-full border-0"
-          style={{ minHeight: '800px' }}
+          className="w-full border-0 bg-transparent"
+          style={{ minHeight: '800px', background: 'transparent' }}
           title="Contact Form"
+          allowTransparency={true}
         />
       </div>
     </section>
