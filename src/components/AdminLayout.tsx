@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { LayoutDashboard, Images, FileText, Search, LogOut, ImageIcon, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Images, FileText, Search, LogOut, ImageIcon, Sparkles, Quote } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { signOut } = useAuth();
@@ -18,6 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { path: '/admin/projects', label: 'Projects', icon: Images },
     { path: '/admin/blog', label: 'Blog', icon: FileText },
     { path: '/admin/services', label: 'Services', icon: Sparkles },
+    { path: '/admin/testimonials', label: 'Reviews', icon: Quote },
     { path: '/admin/seo', label: 'Page SEO', icon: Search },
   ];
 
