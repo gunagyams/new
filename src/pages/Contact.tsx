@@ -10,8 +10,8 @@ export default function Contact() {
     getPageSEO('contact').then(setSeoSettings);
   }, []);
 
-  const pageTitle = seoSettings?.seo_title || 'Contact Us - Get In Touch';
-  const pageDescription = seoSettings?.meta_description || 'Ready to book your photography session? Contact us today to discuss your needs.';
+  const pageTitle = seoSettings?.seo_title || 'Contact | SynCing Films';
+  const pageDescription = seoSettings?.meta_description || 'Get in touch with SynCing Films to inquire about wedding photography and videography across Kelowna, the Okanagan, and Vancouver.';
 
   return (
     <div className="min-h-screen bg-[#f8f6f3] pt-24">

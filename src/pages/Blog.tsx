@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { BlogPost } from '../lib/types';
+import { getPageSEO, type PageSEOSettings } from '../lib/seo';
 
 export default function Blog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [seoSettings, setSeoSettings] = useState<PageSEOSettings | null>(null);
 
   useEffect(() => {
     fetchPosts();
+    getPageSEO('blog').then(setSeoSettings);
   }, []);
 
   const fetchPosts = async () => {
@@ -36,8 +40,26 @@ export default function Blog() {
       </div>
     );
   }
+  const pageTitle = seoSettings?.seo_title || 'Journal | SynCing Films';
+  const pageDescription = seoSettings?.meta_description || 'Stories, tips, and inspiration for your wedding day from SynCing Films.';
+
   return (
     <div className="min-h-screen bg-[#f8f6f3] pt-24">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        {seoSettings?.keywords && <meta name="keywords" content={seoSettings.keywords} />}
+        {seoSettings?.canonical_url && <link rel="canonical" href={seoSettings.canonical_url} />}
+        {seoSettings?.robots_meta && <meta name="robots" content={seoSettings.robots_meta} />}
+        <meta property="og:title" content={seoSettings?.og_title || pageTitle} />
+        <meta property="og:description" content={seoSettings?.og_description || pageDescription} />
+        {seoSettings?.og_image && <meta property="og:image" content={seoSettings.og_image} />}
+        <meta property="og:type" content={seoSettings?.og_type || 'website'} />
+        <meta name="twitter:card" content={seoSettings?.twitter_card || 'summary_large_image'} />
+        <meta name="twitter:title" content={seoSettings?.twitter_title || pageTitle} />
+        <meta name="twitter:description" content={seoSettings?.twitter_description || pageDescription} />
+        {seoSettings?.twitter_image && <meta name="twitter:image" content={seoSettings.twitter_image} />}
+      </Helmet>
       <div className="relative h-[300px] bg-gradient-to-br from-[#d4c5b0] via-[#c9b89a] to-[#b8a585]">
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div>

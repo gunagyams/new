@@ -79,8 +79,8 @@ export default function Stories() {
     );
   }
 
-  const pageTitle = seoSettings?.seo_title || 'Our Photography Portfolio';
-  const pageDescription = seoSettings?.meta_description || 'Explore our collection of stunning photography projects and client stories.';
+  const pageTitle = seoSettings?.seo_title || 'Portfolio | SynCing Films';
+  const pageDescription = seoSettings?.meta_description || 'Explore real wedding photography and videography stories captured across British Columbia by SynCing Films.';
 
   return (
     <div className="min-h-screen bg-[#f8f6f3] pt-24">

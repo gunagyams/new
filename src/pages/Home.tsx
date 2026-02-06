@@ -26,8 +26,8 @@ export default function Home() {
     getPageSEO('home').then(setSeoSettings);
   }, []);
 
-  const pageTitle = seoSettings?.seo_title || 'Professional Photography Services';
-  const pageDescription = seoSettings?.meta_description || 'Capturing life\'s precious moments with artistic excellence and professional expertise.';
+  const pageTitle = seoSettings?.seo_title || 'SynCing Films | Professional Photography Services';
+  const pageDescription = seoSettings?.meta_description || 'SynCing Films is a BC wedding photography and videography studio serving Kelowna, the Okanagan, and Vancouver.';
 
   return (
     <div className="bg-cream min-h-screen text-charcoal selection:bg-maroon/30">
