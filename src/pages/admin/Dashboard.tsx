@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import AdminLayout from '../../components/AdminLayout';
-import { Images, FileText, Plus, Lock, Unlock } from 'lucide-react';
+import { Images, FileText, Plus, Lock, Unlock, ExternalLink } from 'lucide-react';
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -88,11 +88,22 @@ export default function Dashboard() {
   return (
     <AdminLayout>
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-            Dashboard
-          </h1>
-          <p className="text-neutral-600">Welcome to your admin panel</p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-4xl mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+              Dashboard
+            </h1>
+            <p className="text-neutral-600">Welcome to your admin panel</p>
+          </div>
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-5 py-2.5 border border-neutral-300 rounded-lg text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+          >
+            <ExternalLink className="w-4 h-4" />
+            View Site
+          </a>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">

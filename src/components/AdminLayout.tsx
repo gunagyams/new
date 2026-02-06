@@ -53,13 +53,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <Link
-                to="/"
-                target="_blank"
-                className="text-sm text-neutral-600 hover:text-neutral-800"
-              >
-                View Site
-              </Link>
               <button
                 onClick={handleSignOut}
                 className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-600 hover:text-neutral-800 transition-colors"
