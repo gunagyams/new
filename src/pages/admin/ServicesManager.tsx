@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Upload, X, Image, Film as FilmIcon } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { uploadImage } from '../../lib/storage';
+import AdminLayout from '../../components/AdminLayout';
 
 interface Service {
   id: string;
@@ -267,13 +268,16 @@ export default function ServicesManager() {
 
   if (loading && services.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-gray-800 border-r-transparent"></div>
-      </div>
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-gray-800 border-r-transparent"></div>
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
+    <AdminLayout>
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -550,5 +554,6 @@ export default function ServicesManager() {
         </div>
       )}
     </div>
+    </AdminLayout>
   );
 }

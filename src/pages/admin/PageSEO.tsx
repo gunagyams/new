@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Search, Save, ChevronDown, ChevronUp } from 'lucide-react';
+import { Save, ChevronDown, ChevronUp } from 'lucide-react';
+import AdminLayout from '../../components/AdminLayout';
 import SEOPreview from '../../components/SEOPreview';
 
 interface PageSEO {
@@ -108,13 +109,16 @@ export default function PageSEO() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-neutral-600">Loading...</div>
-      </div>
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-neutral-600">Loading...</div>
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
+    <AdminLayout>
     <div className="max-w-6xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-neutral-800 mb-2">Page SEO Settings</h1>
@@ -445,5 +449,6 @@ export default function PageSEO() {
         </div>
       </div>
     </div>
+    </AdminLayout>
   );
 }
