@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
 
         <div className="flex space-x-8">
           <a href="https://www.instagram.com/syncingfilms/" target="_blank" rel="noopener noreferrer" className="hover:text-maroon transition-colors"><Instagram size={20} strokeWidth={1.5} /></a>
-          <a href="#" className="hover:text-maroon transition-colors"><TikTokIcon size={20} /></a>
+          <a href="https://www.tiktok.com/@syncingfilms?_r=1&_t=ZS-92RGedo24SC" target="_blank" rel="noopener noreferrer" className="hover:text-maroon transition-colors"><TikTokIcon size={20} /></a>
           <a href="mailto:syncingfilms@gmail.com" className="hover:text-maroon transition-colors"><Mail size={20} strokeWidth={1.5} /></a>
         </div>
 
