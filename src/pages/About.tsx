@@ -141,7 +141,7 @@ export default function About() {
                   <img
                     src={getImageUrl('story_main', '/assets/images/DSC03847.jpg')}
                     alt={getImageAlt('story_main', 'Photography lifestyle')}
-                    className="w-full h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700"
+                    className="w-full object-contain transform group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
               </div>
